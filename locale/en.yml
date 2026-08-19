@@ -52,3 +52,14 @@ linkrobins-flock:
       are paused. Everyone who already pays you keeps their access.
 
     check_again: Check again
+
+  forum:
+    plan_not_on_sale: That membership isn't available right now.
+    not_selling: This forum isn't taking new memberships at the moment. Nothing changes for anyone who already has one.
+    checkout_failed: Couldn't reach the payment page. Nothing has been charged. Try again in a moment.
+
+# Refusals a member can act on. Flarum renders the type through these keys, so
+# the key name is the error type with _message after it.
+flock_plan_not_on_sale_message: That membership isn't available right now.
+flock_not_selling_message: This forum isn't taking new memberships at the moment. Nothing changes for anyone who already has one.
+flock_checkout_failed_message: Couldn't reach the payment page. Nothing has been charged. Try again in a moment.
