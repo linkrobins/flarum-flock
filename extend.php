@@ -11,6 +11,7 @@ use Flarum\Extend;
 use Flarum\Settings\Event\Deserializing;
 use Flarum\Settings\Event\Saved;
 use LinkRobins\Flock\Api\Controller\RecheckController;
+use LinkRobins\Flock\Api\Resource\PlanResource;
 use LinkRobins\Flock\Api\Controller\StatusController;
 use LinkRobins\Flock\Listener\CheckKeyOnSave;
 use LinkRobins\Flock\Listener\HideKeysFromAdmin;
@@ -21,6 +22,12 @@ return [
         ->css(__DIR__.'/less/admin.less'),
 
     new Extend\Locales(__DIR__.'/locale'),
+
+    /*
+     * Plans are readable by anyone who can see the forum, since a price list
+     * has to be readable to be decided on, and writable by admins only.
+     */
+    (new Extend\ApiResource(PlanResource::class)),
 
     (new Extend\Event())
         ->listen(Saved::class, CheckKeyOnSave::class)
