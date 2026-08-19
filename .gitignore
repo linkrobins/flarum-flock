@@ -5,3 +5,6 @@ vendor
 composer.lock
 tests/.phpunit.result.cache
 .phpunit.cache
+
+# Internal, not for the public repo. Lives in the working copy only.
+SPEC.md
