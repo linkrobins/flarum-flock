@@ -70,8 +70,10 @@ subscriptions; it never strips access members already paid the owner for.
 - Account tab (chirp tile/slide-over idiom): buy, reveal, rotate, cancel,
   billing portal. Admin list page. Lander (route name TBD with product name).
 - Billing service `lr_memberships`; webhook `is_memberships` → activate/cancel
-  the key. **No provisioning jobs — there is no container.** This is the first
-  keyed product with zero infrastructure per customer: the key is a row.
+  the key. No provisioning jobs — there is no container. Like Birdseye there is
+  zero per-customer infrastructure; unlike Birdseye there is also zero RUNTIME
+  involvement (Birdseye crunches every forum-day of events through
+  /api/birdseye/process; here the only touchpoint is the fail-open key check).
 - Status endpoint like `/api/birdseye/status`: reports key standing; never
   binds forum_url on a read (the PR #68 lesson).
 
