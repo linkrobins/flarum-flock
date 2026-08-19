@@ -12,7 +12,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "flarum/core": "^2.0"
+        "flarum/core": "^2.0",
+        "stripe/stripe-php": "^21.2"
     },
     "require-dev": {
         "flarum/testing": "^2.0",

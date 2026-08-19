@@ -14,6 +14,7 @@ use LinkRobins\Flock\Api\Controller\RecheckController;
 use LinkRobins\Flock\Api\Resource\PlanResource;
 use LinkRobins\Flock\Api\Controller\StatusController;
 use LinkRobins\Flock\Listener\CheckKeyOnSave;
+use LinkRobins\Flock\Listener\ConfigureStripeOnSave;
 use LinkRobins\Flock\Listener\HideKeysFromAdmin;
 
 return [
@@ -31,6 +32,7 @@ return [
 
     (new Extend\Event())
         ->listen(Saved::class, CheckKeyOnSave::class)
+        ->listen(Saved::class, ConfigureStripeOnSave::class)
         ->listen(Deserializing::class, HideKeysFromAdmin::class),
 
     (new Extend\Routes('api'))

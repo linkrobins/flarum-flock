@@ -15,6 +15,7 @@ use Flarum\Api\Schema;
 use Illuminate\Database\Eloquent\Builder;
 use LinkRobins\Flock\Groups;
 use LinkRobins\Flock\Plan;
+use LinkRobins\Flock\Stripe\PlanSync;
 use Tobyz\JsonApiServer\Context;
 
 /**
@@ -30,7 +31,8 @@ use Tobyz\JsonApiServer\Context;
 class PlanResource extends AbstractDatabaseResource
 {
     public function __construct(
-        protected Groups $groups
+        protected Groups $groups,
+        protected PlanSync $sync
     ) {
     }
 
@@ -72,8 +74,30 @@ class PlanResource extends AbstractDatabaseResource
      */
     public function created(object $model, Context $context): ?object
     {
-        if ($model instanceof Plan && $model->group_id === null) {
-            $this->groups->forPlan($model);
+        if ($model instanceof Plan) {
+            if ($model->group_id === null) {
+                $this->groups->forPlan($model);
+            }
+
+            // Straight away, so the owner sees whether it is sellable in the
+            // same response rather than wondering. A Stripe that says no leaves
+            // the plan saved and unsellable rather than failing the save: the
+            // plan is theirs, the outage is not.
+            $this->sync->push($model);
+        }
+
+        return $model;
+    }
+
+    /**
+     * An edited plan follows to Stripe. Name and description are editable
+     * there; the money is not, so a changed price becomes a new Price and
+     * everyone already subscribed keeps the one they agreed to.
+     */
+    public function saved(object $model, Context $context): ?object
+    {
+        if ($model instanceof Plan && $model->wasChanged(['name', 'description', 'amount', 'currency', 'interval'])) {
+            $this->sync->push($model);
         }
 
         return $model;
