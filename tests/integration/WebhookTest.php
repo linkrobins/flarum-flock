@@ -146,6 +146,34 @@ class WebhookTest extends TestCase
     }
 
     /**
+     * An invoice does not carry its subscription flat any more: Stripe moved it
+     * under the parent that generated the invoice. Reading only the old shape
+     * meant every invoice event this extension subscribes to quietly did
+     * nothing, which is the kind of bug that shows up as "renewals sometimes do
+     * not register" months later.
+     *
+     * @test
+     */
+    #[Test]
+    public function an_invoice_event_is_understood_in_both_shapes(): void
+    {
+        $modern = $this->payload('invoice.paid', [
+            'id' => 'in_1',
+            'parent' => ['subscription_details' => ['subscription' => 'sub_1']],
+        ]);
+
+        $this->assertEquals(200, $this->post($modern, $this->sign($modern))->getStatusCode());
+        $this->assertTrue($this->member()->groups->contains('id', 100), 'the modern shape routed');
+
+        FakeGateway::$asked = [];
+
+        $legacy = $this->payload('invoice.payment_failed', ['id' => 'in_2', 'subscription' => 'sub_1']);
+
+        $this->assertEquals(200, $this->post($legacy, $this->sign($legacy))->getStatusCode());
+        $this->assertContains('subscription:sub_1', FakeGateway::$asked, 'the older shape routed too');
+    }
+
+    /**
      * Stripe retries anything that is not a 200, so an event this extension has
      * no use for is accepted and ignored rather than refused forever.
      *

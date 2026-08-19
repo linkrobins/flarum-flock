@@ -105,7 +105,13 @@ class WebhookController implements RequestHandlerInterface
         // they belong to. An abandoned checkout has none, which is the zombie
         // rule holding: no subscription, nothing written.
         if ($type === 'checkout.session.completed' || str_starts_with($type, 'invoice.')) {
-            $subscription = $object->subscription ?? null;
+            // An invoice no longer carries `subscription` directly: Stripe moved
+            // it under the parent that generated the invoice. Both shapes are
+            // read, since an account pinned to an older API version still sends
+            // the flat one, and reading only the old one meant every invoice
+            // event this extension subscribes to quietly did nothing.
+            $subscription = $object->subscription
+                ?? ($object->parent->subscription_details->subscription ?? null);
 
             if (is_string($subscription)) {
                 return $subscription;

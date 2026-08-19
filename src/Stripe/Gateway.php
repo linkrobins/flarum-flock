@@ -124,11 +124,43 @@ class Gateway
             'id' => $subscription->id,
             'status' => (string) $subscription->status,
             'customer' => is_string($customer) ? $customer : ($customer->id ?? null),
-            'period_end' => $subscription->current_period_end ?? null,
+            'period_end' => self::periodEnd($subscription),
             'cancel_at_period_end' => (bool) ($subscription->cancel_at_period_end ?? false),
             'user_id' => $this->intMeta($subscription->metadata['flock_user_id'] ?? null),
             'plan_id' => $this->intMeta($subscription->metadata['flock_plan_id'] ?? null),
         ];
+    }
+
+    /**
+     * When the period a member has paid for runs out.
+     *
+     * Stripe moved this off the subscription and onto its items, because a
+     * subscription can carry items on different cycles and so has no single
+     * period any more. Flock sells exactly one price per plan, so the first
+     * item's period is the subscription's.
+     *
+     * This is not cosmetic: with no date, a cancelled subscription looks like
+     * one whose time is already up, and the member loses the rest of what they
+     * paid for the moment they click cancel. The old field is still read as a
+     * fallback, since an account pinned to an earlier API version still sends
+     * it and nothing else would.
+     *
+     * Static and object-typed so it can be tested against both shapes without a
+     * network.
+     */
+    public static function periodEnd(object $subscription): ?int
+    {
+        $item = $subscription->items->data[0] ?? null;
+
+        if ($item !== null && isset($item->current_period_end) && is_numeric($item->current_period_end)) {
+            return (int) $item->current_period_end;
+        }
+
+        if (isset($subscription->current_period_end) && is_numeric($subscription->current_period_end)) {
+            return (int) $subscription->current_period_end;
+        }
+
+        return null;
     }
 
     /** @return array<string, string> */

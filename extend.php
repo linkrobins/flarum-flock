@@ -88,6 +88,7 @@ return [
      */
     (new Extend\ErrorHandling())
         ->status('flock_plan_not_on_sale', 422)
+        ->status('flock_already_a_member', 409)
         ->status('flock_not_selling', 422)
         ->status('flock_checkout_failed', 502),
 ];

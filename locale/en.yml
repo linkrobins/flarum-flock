@@ -97,6 +97,7 @@ linkrobins-flock:
 
 # Refusals a member can act on. Flarum renders the type through these keys, so
 # the key name is the error type with _message after it.
+flock_already_a_member_message: You already have this membership, so there's nothing to pay for.
 flock_plan_not_on_sale_message: That membership isn't available right now.
 flock_not_selling_message: This forum isn't taking new memberships at the moment. Nothing changes for anyone who already has one.
 flock_checkout_failed_message: Couldn't reach the payment page. Nothing has been charged. Try again in a moment.

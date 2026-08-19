@@ -14,10 +14,12 @@ use Flarum\Http\RequestUtil;
 use Laminas\Diactoros\Response\JsonResponse;
 use LinkRobins\Flock\KeyStatus;
 use LinkRobins\Flock\Plan;
+use LinkRobins\Flock\Subscription;
 use LinkRobins\Flock\Stripe\Gateway;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use LinkRobins\Flock\Exception\AlreadyAMemberException;
 use LinkRobins\Flock\Exception\CheckoutFailedException;
 use LinkRobins\Flock\Exception\NotSellingException;
 use LinkRobins\Flock\Exception\PlanNotOnSaleException;
@@ -56,6 +58,14 @@ class CheckoutController implements RequestHandlerInterface
             throw new NotSellingException();
         }
 
+        // The Join page hides the button for a plan they already hold, but the
+        // page is not the boundary: a double click, a stale tab or a plain POST
+        // would otherwise start a second subscription to the same group and
+        // charge them twice for it, leaving the owner to do the refund.
+        if ($this->alreadyHas($actor->id, $plan)) {
+            throw new AlreadyAMemberException();
+        }
+
         $url = $this->gateway->checkout(
             $plan,
             (int) $actor->id,
@@ -69,6 +79,16 @@ class CheckoutController implements RequestHandlerInterface
         }
 
         return new JsonResponse(['url' => $url]);
+    }
+
+    /** Whether this member is already entitled to what this plan grants. */
+    protected function alreadyHas(int $userId, Plan $plan): bool
+    {
+        return Subscription::query()
+            ->where('user_id', $userId)
+            ->where('plan_id', $plan->id)
+            ->get()
+            ->contains(fn (Subscription $subscription) => $subscription->grantsAccess());
     }
 
     /**
