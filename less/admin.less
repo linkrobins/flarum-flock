@@ -1,0 +1,18 @@
+// The key banner. Quiet by default: most of what it says is not an emergency,
+// and the one state that is says so in words rather than in colour.
+.FlockStatus {
+  margin-bottom: 20px;
+  padding: 12px 15px;
+  background: var(--control-bg);
+  border-radius: var(--border-radius);
+
+  p {
+    margin: 0;
+  }
+
+  &--canceled,
+  &--invalid_key,
+  &--bound_elsewhere {
+    background: fade(#d83e3e, 8%);
+  }
+}

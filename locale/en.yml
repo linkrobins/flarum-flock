@@ -1,0 +1,54 @@
+linkrobins-flock:
+  admin:
+    key_label: Flock key
+    key_help: >
+      Paste the key from your linkrobins.com dashboard. It unlocks selling
+      memberships on this forum. Members you already have are never affected by
+      it, including if it lapses.
+
+    stripe_key_label: Stripe restricted key
+    stripe_key_help: >
+      From your own Stripe dashboard, under Developers, API keys, Create
+      restricted key. Never paste your secret key here. Your members pay you
+      directly and the money never passes through Link Robins.
+
+    grace_days_label: Days to keep access after a failed payment
+    grace_days_help: >
+      Stripe retries a failed renewal for a few days. This is how long a member
+      keeps their group while that happens, before it is taken back.
+
+    active: >
+      ✓ Connected. You can sell memberships on this forum.
+    active_bound: >
+      ✓ Connected, and this key belongs to {forum}.
+
+    unconfigured: >
+      Paste your Flock key to start selling memberships. Everything else on this
+      page can be set up first.
+
+    incomplete: >
+      Your Flock subscription hasn't finished setting up yet. That usually takes
+      a moment after paying. Press Check again.
+
+    invalid_key: >
+      That key wasn't recognized. Check you copied it in full, and that your
+      Flock subscription is still active.
+
+    canceled: >
+      Your Flock subscription has lapsed, so no new memberships can be sold.
+      Everyone who already pays you keeps their access, and their payments to
+      you carry on as normal.
+
+    bound_elsewhere: >
+      This key is already in use on {forum}. A key belongs to one forum. Get
+      another from your dashboard, or move this one there first.
+
+    unreachable: >
+      Can't reach Link Robins right now. Nothing is broken for your members, and
+      you can keep selling until {date}.
+
+    unreachable_expired: >
+      Can't reach Link Robins, and it's been long enough that new memberships
+      are paused. Everyone who already pays you keeps their access.
+
+    check_again: Check again
