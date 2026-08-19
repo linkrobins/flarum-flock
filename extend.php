@@ -7,11 +7,13 @@
  * LICENSE file that was distributed with this source code.
  */
 
+use Flarum\Api\Resource\ForumResource;
 use Flarum\Extend;
 use Flarum\Settings\Event\Deserializing;
 use Flarum\Settings\Event\Saved;
 use LinkRobins\Flock\Api\Controller\CheckoutController;
 use LinkRobins\Flock\Api\Controller\RecheckController;
+use LinkRobins\Flock\Api\ForumFields;
 use LinkRobins\Flock\Api\Resource\PlanResource;
 use LinkRobins\Flock\Http\CompleteController;
 use LinkRobins\Flock\Http\ReconcileMiddleware;
@@ -23,6 +25,10 @@ use LinkRobins\Flock\Listener\ConfigureStripeOnSave;
 use LinkRobins\Flock\Listener\HideKeysFromAdmin;
 
 return [
+    (new Extend\Frontend('forum'))
+        ->js(__DIR__.'/js/dist/forum.js')
+        ->css(__DIR__.'/less/forum.less'),
+
     (new Extend\Frontend('admin'))
         ->js(__DIR__.'/js/dist/admin.js')
         ->css(__DIR__.'/less/admin.less'),
@@ -34,6 +40,13 @@ return [
      * has to be readable to be decided on, and writable by admins only.
      */
     (new Extend\ApiResource(PlanResource::class)),
+
+    /*
+     * What the Join page needs before it draws: which plans this member already
+     * has, so it never invites anyone to buy the same membership twice.
+     */
+    (new Extend\ApiResource(ForumResource::class))
+        ->fields(ForumFields::class),
 
     (new Extend\Event())
         ->listen(Saved::class, CheckKeyOnSave::class)

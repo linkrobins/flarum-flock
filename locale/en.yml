@@ -54,6 +54,13 @@ linkrobins-flock:
     check_again: Check again
 
   forum:
+    nav: Memberships
+    join: Join
+    you_have_this: You have this
+    per_month: a month
+    per_year: a year
+    no_plans: There's nothing on offer here yet.
+
     plan_not_on_sale: That membership isn't available right now.
     not_selling: This forum isn't taking new memberships at the moment. Nothing changes for anyone who already has one.
     checkout_failed: Couldn't reach the payment page. Nothing has been charged. Try again in a moment.

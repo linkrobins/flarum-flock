@@ -1,0 +1,49 @@
+// The Join page. Plain on purpose: it is a price list on somebody's forum, not
+// a landing page, and it borrows the theme rather than bringing a look.
+.FlockPlans {
+  list-style: none;
+  margin: 20px 0;
+  padding: 0;
+  display: grid;
+  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.FlockPlan {
+  padding: 20px;
+  background: var(--control-bg);
+  border-radius: var(--border-radius);
+
+  &-name {
+    margin: 0;
+    font-size: calc(1.1rem * var(--lr-ui-scale, 1));
+  }
+
+  &-price {
+    margin: 8px 0 12px;
+  }
+
+  &-amount {
+    font-size: calc(1.6rem * var(--lr-ui-scale, 1));
+    font-weight: 600;
+  }
+
+  &-interval {
+    margin-left: 6px;
+    color: var(--muted-color);
+  }
+
+  &-description {
+    margin: 0 0 15px;
+    font-size: calc(1rem * var(--lr-text-scale, 1));
+  }
+
+  &-held {
+    color: var(--muted-color);
+  }
+}
+
+.FlockPlans-empty {
+  margin: 30px 0;
+  color: var(--muted-color);
+}
