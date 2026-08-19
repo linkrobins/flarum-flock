@@ -1,6 +1,6 @@
 # Paid Memberships for Flarum — spec v1 (2026-08-19)
 
-Working name: **Memberships** (product name is Karl's call, as with Forage).
+Name: **Flock** (Karl, 2026-08-19). Price: **$30/yr** flat.
 Decided by Karl 2026-08-19: **owner's own Stripe keys** (we are never in the
 money flow) and **flat yearly srvup key, Birdseye-style** (extension free/MIT
 on Packagist, paid key unlocks it).
@@ -65,11 +65,11 @@ subscriptions; it never strips access members already paid the owner for.
   drawer idea if this ever needs to be push-based.)
 
 ### srvup side (clone the Birdseye rails)
-- `MembershipKey` model (`mbr_` prefix), flat yearly, status
+- `MembershipKey` model (`flk_` prefix), flat yearly, status
   incomplete|active|canceled, last_seen_at.
 - Account tab (chirp tile/slide-over idiom): buy, reveal, rotate, cancel,
   billing portal. Admin list page. Lander (route name TBD with product name).
-- Billing service `lr_memberships`; webhook `is_memberships` → activate/cancel
+- Billing service `lr_flock`; webhook `is_memberships` → activate/cancel
   the key. No provisioning jobs — there is no container. Like Birdseye there is
   zero per-customer infrastructure; unlike Birdseye there is also zero RUNTIME
   involvement (Birdseye crunches every forum-day of events through
@@ -97,5 +97,5 @@ enables it — we surface the checkbox, nothing more), multi-currency.
   no row; grace window boundaries; group NOT removed on transient `past_due`;
   reconcile-on-login when stale; key fail-open (srvup unreachable ≠ members
   locked out).
-- Repo: `linkrobins/flarum-memberships` (public, MIT) once named — creating
+- Repo: `linkrobins/flarum-flock` (public, MIT) once named — creating
   the GitHub repo is a Karl-visible action, ask first.
