@@ -24,6 +24,12 @@ The key check follows Birdseye's status-endpoint pattern but FAILS OPEN with a
 cached last-good validation (~7 days grace). A lapsed key stops NEW
 subscriptions; it never strips access members already paid the owner for.
 
+SETTLED 2026-08-19 (flarum session's call, endorsed): the grace window covers
+OUTAGES only — `unreachable` rides the 7-day cached answer; a definite
+`canceled` / `invalid_key` / `bound_elsewhere` stops new sales immediately.
+The window exists for srvup's availability, not to keep selling on a
+subscription that ended. Either way nothing in the key path touches groups.
+
 ## Architecture
 
 ### Extension (public, MIT, Flarum 2.0 only)
@@ -42,7 +48,7 @@ subscriptions; it never strips access members already paid the owner for.
   (SAQ-A, zero PCI burden, no card forms in Flarum) →
   `allow_promotion_codes: true` (owner's coupons work day one for free) →
   webhook lands → local subscription row + group grant.
-- **Webhook endpoint** `/api/linkrobins-memberships/stripe`: CSRF-exempt,
+- **Webhook endpoint** `/api/linkrobins-flock/stripe`: CSRF-exempt,
   signature-verified, and does its work IN the webhook request — no queue
   worker required for correctness (the queue-portability contract; digest-style
   features are where workers matter, not here).
