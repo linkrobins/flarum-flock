@@ -39,12 +39,7 @@ export default class FlockStatus extends Component {
       return null;
     }
 
-    return m(
-      'div',
-      { className: 'FlockStatus FlockStatus--' + this.standing.status },
-      m('p', null, this.message()),
-      this.retry()
-    );
+    return m('div', { className: 'FlockStatus FlockStatus--' + this.standing.status }, m('p', null, this.message()), this.retry());
   }
 
   message(): Mithril.Children {
@@ -53,9 +48,7 @@ export default class FlockStatus extends Component {
 
     switch (standing.status) {
       case 'active':
-        return standing.boundTo
-          ? app.translator.trans(key + 'active_bound', { forum: standing.boundTo })
-          : app.translator.trans(key + 'active');
+        return standing.boundTo ? app.translator.trans(key + 'active_bound', { forum: standing.boundTo }) : app.translator.trans(key + 'active');
 
       case 'unreachable':
         // Two very different sentences behind one status: still selling, or
