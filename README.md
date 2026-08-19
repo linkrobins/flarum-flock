@@ -44,3 +44,22 @@ anything at any point.
 - It does not ask for your Stripe secret key.
 - It does not remove users or their content, ever. Only group membership.
 - It does not rebuild your Stripe dashboard. Revenue questions belong there.
+
+## Running the tests
+
+```
+composer test:setup
+composer test
+```
+
+⚠️ The Stripe SDK ships `lib/agent_plugin_hint.php`, which detects the
+`CLAUDECODE` environment variable and writes a line to stderr. Under PHPUnit's
+process isolation that line lands where the test result is meant to be, and
+every integration test errors. Clear the variable when running locally inside a
+coding agent:
+
+```
+env -u CLAUDECODE -u CLAUDE_CODE_CHILD_SESSION composer test:integration
+```
+
+CI is unaffected, since the variable does not exist there.
