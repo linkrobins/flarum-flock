@@ -1,0 +1,12 @@
+[2026-08-19T21:02:40.772929+00:00] flarum.WARNING: [Flock] Refused a webhook: Unable to extract timestamp and signatures from header  
+[2026-08-19T21:02:40.775456+00:00] flarum.WARNING: [Flock] Refused a webhook: Unable to extract timestamp and signatures from header  
+[2026-08-19T21:02:40.776933+00:00] flarum.WARNING: [Flock] Refused a webhook: No signatures found matching the expected signature for payload  
+[2026-08-19T21:02:40.980086+00:00] flarum.WARNING: [Flock] Refused a webhook: Timestamp outside the tolerance zone  
+[2026-08-19T21:02:57.730583+00:00] flarum.WARNING: [Flock] Refused a webhook: Unable to extract timestamp and signatures from header  
+[2026-08-19T21:02:57.733666+00:00] flarum.WARNING: [Flock] Refused a webhook: Unable to extract timestamp and signatures from header  
+[2026-08-19T21:02:57.734461+00:00] flarum.WARNING: [Flock] Refused a webhook: No signatures found matching the expected signature for payload  
+[2026-08-19T21:02:57.935402+00:00] flarum.WARNING: [Flock] Refused a webhook: Timestamp outside the tolerance zone  
+[2026-08-19T21:03:15.087292+00:00] flarum.WARNING: [Flock] Refused a webhook: Unable to extract timestamp and signatures from header  
+[2026-08-19T21:03:15.090051+00:00] flarum.WARNING: [Flock] Refused a webhook: Unable to extract timestamp and signatures from header  
+[2026-08-19T21:03:15.090961+00:00] flarum.WARNING: [Flock] Refused a webhook: No signatures found matching the expected signature for payload  
+[2026-08-19T21:03:15.301395+00:00] flarum.WARNING: [Flock] Refused a webhook: Timestamp outside the tolerance zone  

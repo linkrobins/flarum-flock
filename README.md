@@ -52,14 +52,18 @@ composer test:setup
 composer test
 ```
 
-⚠️ The Stripe SDK ships `lib/agent_plugin_hint.php`, which detects the
-`CLAUDECODE` environment variable and writes a line to stderr. Under PHPUnit's
-process isolation that line lands where the test result is meant to be, and
-every integration test errors. Clear the variable when running locally inside a
-coding agent:
+⚠️ The Stripe SDK ships `lib/agent_plugin_hint.php`, which writes a line to
+stderr when it detects that it is running inside a coding-agent environment.
+Under PHPUnit's process isolation that line lands where the test result is meant
+to be, and every integration test errors with it as the message.
+
+If you hit that, unset the variables the SDK looks for (they are listed at the
+top of that file) before running the suite. Unsetting is the point: emptying
+them is not enough, since the check is `false !== getenv(...)` and an
+empty-but-set variable still trips it.
 
 ```
-env -u CLAUDECODE -u CLAUDE_CODE_CHILD_SESSION composer test:integration
+env -u VARIABLE_NAME composer test:integration
 ```
 
-CI is unaffected, since the variable does not exist there.
+CI is unaffected, because those variables do not exist there.
