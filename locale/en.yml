@@ -53,6 +53,36 @@ linkrobins-flock:
 
     check_again: Check again
 
+    plans_heading: Memberships you sell
+    plans_help: >
+      Each one creates a group on your forum. Point your own tag and permission
+      settings at that group to decide what it unlocks.
+    no_plans: Nothing yet. Add your first membership below.
+    add_plan: Add a membership
+    edit_plan: Edit membership
+    save_plan: Save
+    delete_plan: Delete this membership
+    delete_plan_confirm: >
+      Stop selling this membership? Anyone already subscribed keeps their access
+      and keeps being billed until they cancel, and nothing about their account
+      changes.
+    plan_not_ready: not on sale yet
+    plan_retired: retired
+    plan_on_sale: On sale
+    plan_name: Name
+    plan_description: Description
+    plan_price: Price
+    plan_currency: Currency
+    plan_interval: Billed
+    monthly: Monthly
+    yearly: Yearly
+    price_change_help: >
+      Changing the price only affects new members. Everyone already subscribed
+      keeps the price they signed up at, because Stripe treats a price as
+      permanent once someone is paying it.
+    sync_now: Check every membership with Stripe
+    synced: "{count, plural, one {# membership checked} other {# memberships checked}}"
+
   forum:
     nav: Memberships
     join: Join

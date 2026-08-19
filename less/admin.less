@@ -16,3 +16,49 @@
     background: fade(#d83e3e, 8%);
   }
 }
+
+.FlockAdmin {
+  &-plans {
+    margin-top: 30px;
+  }
+
+  &-planList {
+    list-style: none;
+    margin: 15px 0;
+    padding: 0;
+  }
+
+  &-plan {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 10px 0;
+
+    & + & {
+      border-top: 1px solid var(--control-bg);
+    }
+  }
+
+  &-planName {
+    font-weight: 600;
+  }
+
+  &-planPrice,
+  &-planRetired {
+    color: var(--muted-color);
+  }
+
+  &-planWarning {
+    color: #d83e3e;
+  }
+
+  &-planControls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &-empty {
+    color: var(--muted-color);
+  }
+}
