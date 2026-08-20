@@ -1,5 +1,5 @@
 import app from 'flarum/forum/app';
-import { extend } from 'flarum/common/extend';
+import { extend as extendComponent } from 'flarum/common/extend';
 import Extend from 'flarum/common/extenders';
 import LinkButton from 'flarum/common/components/LinkButton';
 import Plan from './common/models/Plan';
@@ -10,7 +10,7 @@ import type Mithril from 'mithril';
 app.initializers.add('linkrobins/flock', () => {
   // By path, so IndexPage's chunk is not pulled in eagerly just to add a link
   // to the sidebar.
-  extend('flarum/forum/components/IndexPage', 'navItems', function (items: ItemList<Mithril.Children>) {
+  extendComponent('flarum/forum/components/IndexPage', 'navItems', function (items: ItemList<Mithril.Children>) {
     // Nothing to join is nothing to advertise, and a forum whose owner has not
     // set Flock up should look exactly as it did before installing it.
     if (!app.forum.attribute('flockSelling')) {
