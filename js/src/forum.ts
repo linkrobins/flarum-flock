@@ -25,4 +25,4 @@ app.initializers.add('linkrobins/flock', () => {
   });
 });
 
-export default [new Extend.Store().add('flock-plans', Plan), new Extend.Routes().add('flock.plans', '/flock/plans', PlansPage)];
+export const extend = [new Extend.Store().add('flock-plans', Plan), new Extend.Routes().add('flock.plans', '/flock/plans', PlansPage)];
