@@ -27,7 +27,12 @@ use LinkRobins\Flock\Listener\HideKeysFromAdmin;
 return [
     (new Extend\Frontend('forum'))
         ->js(__DIR__.'/js/dist/forum.js')
-        ->css(__DIR__.'/less/forum.less'),
+        ->css(__DIR__.'/less/forum.less')
+        // The JS extender registers this route inside the running app, which is
+        // enough to click to but not enough to LAND on: a link somebody pastes
+        // or bookmarks is a fresh request, and the server has to know the path
+        // exists or it answers with its own 404.
+        ->route('/flock/plans', 'flock.plans'),
 
     (new Extend\Frontend('admin'))
         ->js(__DIR__.'/js/dist/admin.js')
