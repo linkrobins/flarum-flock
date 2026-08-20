@@ -74,7 +74,7 @@ export default class PlansPage extends Page {
             Button,
             {
               className: 'Button Button--primary FlockPlan-join',
-              loading: this.starting === plan.id(),
+              loading: this.starting === Number(plan.id()),
               disabled: !app.forum.attribute('flockSelling'),
               onclick: () => this.join(plan),
             },
