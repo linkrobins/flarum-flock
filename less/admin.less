@@ -83,13 +83,11 @@
 
 // The plan editor.
 .FlockPlanModal {
-  // Core's Button--block is a LESS mixin, not a class, and extension LESS cannot
-  // reach core's mixins any more than it can reach core's variables. Written out.
-  &-save {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    margin-top: 5px;
+  // A phone has less room to spend on gaps than the admin panel's default.
+  @media (max-width: 767.98px) {
+    .Form {
+      --gap: 18px;
+    }
   }
 
   // Destructive, and deliberately not next to the button an owner presses every
