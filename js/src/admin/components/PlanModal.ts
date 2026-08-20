@@ -121,14 +121,12 @@ export default class PlanModal extends Modal<PlanModalAttrs & any> {
             )
           : null,
 
+        // A direct child of .Form, with no Form-group around it, so core's own
+        // rule stretches it across the modal.
         m(
-          'div',
-          { className: 'Form-group' },
-          m(
-            Button,
-            { className: 'Button Button--primary', type: 'submit', loading: this.loading },
-            app.translator.trans('linkrobins-flock.admin.save_plan')
-          )
+          Button,
+          { className: 'Button Button--primary', type: 'submit', loading: this.loading },
+          app.translator.trans('linkrobins-flock.admin.save_plan')
         ),
 
         this.attrs.plan ? this.deleteControl() : null,
