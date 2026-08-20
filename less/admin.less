@@ -1,22 +1,3 @@
-// The key banner. Quiet by default: most of what it says is not an emergency,
-// and the one state that is says so in words rather than in colour.
-.FlockStatus {
-  margin-bottom: 20px;
-  padding: 12px 15px;
-  background: var(--control-bg);
-  border-radius: var(--border-radius);
-
-  p {
-    margin: 0;
-  }
-
-  &--canceled,
-  &--invalid_key,
-  &--bound_elsewhere {
-    background: fade(#d83e3e, 8%);
-  }
-}
-
 .FlockAdmin {
   &-plans {
     margin-top: 30px;
@@ -37,6 +18,18 @@
     & + & {
       border-top: 1px solid var(--control-bg);
     }
+
+    // On a phone the row has nowhere to go sideways: the name and price stack,
+    // and the edit button stops being squeezed into a few pixels at the end.
+    @media (max-width: 767.98px) {
+      flex-wrap: wrap;
+      gap: 4px 10px;
+      padding: 14px 0;
+
+      .Button {
+        margin-left: auto;
+      }
+    }
   }
 
   &-planName {
@@ -56,9 +49,34 @@
     display: flex;
     align-items: center;
     gap: 10px;
+
+    // Two controls with long labels do not fit side by side on a phone.
+    @media (max-width: 767.98px) {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+
+      .Button {
+        width: 100%;
+      }
+    }
   }
 
   &-empty {
     color: var(--muted-color);
+  }
+}
+
+// The settings fields and the plan editor, on a small screen.
+@media (max-width: 767.98px) {
+  .FlockAdmin {
+    &-keys .FormControl {
+      // Long keys in a narrow field: let them wrap rather than scroll sideways.
+      font-size: 14px;
+    }
+  }
+
+  .FlockPlanModal .Modal-body {
+    padding: 15px;
   }
 }
