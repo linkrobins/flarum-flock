@@ -65,7 +65,7 @@ export default class PlansPage extends Page {
       m('h3', { className: 'FlockPlan-name' }, plan.name()),
       m('div', { className: 'FlockPlan-price' }, [
         m('span', { className: 'FlockPlan-amount' }, this.price(plan)),
-        m('span', { className: 'FlockPlan-interval' }, app.translator.trans('linkrobins-flock.forum.per_' + plan.interval())),
+        m('span', { className: 'FlockPlan-interval' }, app.translator.trans('linkrobins-flock.lib.per_' + plan.interval())),
       ]),
       plan.description() ? m('p', { className: 'FlockPlan-description' }, plan.description()) : null,
       held

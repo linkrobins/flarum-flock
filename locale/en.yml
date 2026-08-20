@@ -1,4 +1,11 @@
 linkrobins-flock:
+  # Shared by both frontends: Flarum sends anything under lib to admin and forum
+  # alike, which is where a string the admin page and the Join page both print
+  # belongs. It was under forum:, so the admin page printed the key itself.
+  lib:
+    per_month: a month
+    per_year: a year
+
   admin:
     key_label: Flock key
     key_help: >
@@ -87,8 +94,6 @@ linkrobins-flock:
     nav: Memberships
     join: Join
     you_have_this: You have this
-    per_month: a month
-    per_year: a year
     no_plans: There's nothing on offer here yet.
 
     plan_not_on_sale: That membership isn't available right now.

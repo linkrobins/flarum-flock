@@ -105,7 +105,7 @@ export default class FlockPage extends ExtensionPage {
 
   price(plan: Plan): string {
     const currency = (plan.currency() || 'usd').toUpperCase();
-    const interval = app.translator.trans('linkrobins-flock.forum.per_' + plan.interval());
+    const interval = app.translator.trans('linkrobins-flock.lib.per_' + plan.interval());
 
     try {
       return new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(plan.amount() / 100) + ' ' + interval;
