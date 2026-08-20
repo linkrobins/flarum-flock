@@ -1,6 +1,7 @@
 import app from 'flarum/admin/app';
 import Button from 'flarum/common/components/Button';
 import Modal from 'flarum/common/components/Modal';
+import Select from 'flarum/common/components/Select';
 import Stream from 'flarum/common/utils/Stream';
 import Switch from 'flarum/common/components/Switch';
 import type Mithril from 'mithril';
@@ -51,16 +52,57 @@ export default class PlanModal extends Modal<PlanModalAttrs & any> {
   content(): Mithril.Children {
     return m('div', { className: 'Modal-body' }, [
       this.field('name', m('input', { className: 'FormControl', bidi: this.name, required: true })),
+
       this.field('description', m('textarea', { className: 'FormControl', bidi: this.description, rows: 2 })),
-      this.field('price', m('input', { className: 'FormControl', type: 'number', step: '0.01', min: '0.01', bidi: this.price, required: true })),
-      this.field('currency', m('input', { className: 'FormControl', bidi: this.currency, maxlength: 3, required: true })),
+
+      this.field(
+        'price',
+        m('input', {
+          className: 'FormControl',
+          type: 'number',
+          step: '0.01',
+          min: '0.01',
+          // A phone should offer digits and a decimal point for a price, not a
+          // full keyboard.
+          inputmode: 'decimal',
+          bidi: this.price,
+          required: true,
+        }),
+        // Under the price, where it is about to matter, rather than floating
+        // above the save button: Stripe will not let a price change be undone,
+        // and an existing subscriber keeps the one they agreed to.
+        this.attrs.plan ? app.translator.trans('linkrobins-flock.admin.price_change_help') : null
+      ),
+
+      this.field(
+        'currency',
+        m('input', {
+          className: 'FormControl',
+          bidi: this.currency,
+          maxlength: 3,
+          autocapitalize: 'off',
+          autocorrect: 'off',
+          spellcheck: false,
+          required: true,
+        }),
+        app.translator.trans('linkrobins-flock.admin.currency_help')
+      ),
+
+      // Core's Select rather than a bare <select>: it turns off the native
+      // appearance, which is what stops iOS clipping the chosen option inside a
+      // fixed-height control.
       this.field(
         'interval',
-        m('select', { className: 'FormControl', bidi: this.interval }, [
-          m('option', { value: 'month' }, app.translator.trans('linkrobins-flock.admin.monthly')),
-          m('option', { value: 'year' }, app.translator.trans('linkrobins-flock.admin.yearly')),
-        ])
+        Select.component({
+          options: {
+            month: app.translator.trans('linkrobins-flock.admin.monthly'),
+            year: app.translator.trans('linkrobins-flock.admin.yearly'),
+          },
+          value: this.interval(),
+          onchange: (value: string) => this.interval(value),
+        })
       ),
+
       this.attrs.plan
         ? m(
             'div',
@@ -72,31 +114,44 @@ export default class PlanModal extends Modal<PlanModalAttrs & any> {
             )
           )
         : null,
-      // Said here rather than after the fact, because Stripe will not let it be
-      // undone: an existing subscriber keeps the price they agreed to.
-      this.attrs.plan ? m('p', { className: 'helpText' }, app.translator.trans('linkrobins-flock.admin.price_change_help')) : null,
+
       m(
         'div',
         { className: 'Form-group' },
         m(
           Button,
-          { className: 'Button Button--primary', type: 'submit', loading: this.loading },
+          { className: 'Button Button--primary Button--block', type: 'submit', loading: this.loading },
           app.translator.trans('linkrobins-flock.admin.save_plan')
         )
       ),
+
       this.attrs.plan ? this.deleteControl() : null,
     ]);
   }
 
-  field(key: string, control: Mithril.Children): Mithril.Children {
-    return m('div', { className: 'Form-group' }, [m('label', null, app.translator.trans('linkrobins-flock.admin.plan_' + key)), control]);
+  field(key: string, control: Mithril.Children, help: Mithril.Children = null): Mithril.Children {
+    return m('div', { className: 'Form-group' }, [
+      m('label', null, app.translator.trans('linkrobins-flock.admin.plan_' + key)),
+      control,
+      help ? m('p', { className: 'helpText' }, help) : null,
+    ]);
   }
 
+  /**
+   * Kept away from Save, and looking like what it is.
+   *
+   * It sits below a rule rather than beside the button somebody presses every
+   * time they edit a price: the two actions are not in the same league.
+   */
   deleteControl(): Mithril.Children {
     return m(
       'div',
-      { className: 'Form-group FlockPlanModal-delete' },
-      m(Button, { className: 'Button Button--link', onclick: () => this.remove() }, app.translator.trans('linkrobins-flock.admin.delete_plan'))
+      { className: 'FlockPlanModal-delete' },
+      m(
+        Button,
+        { className: 'Button Button--text FlockPlanModal-deleteButton', icon: 'fas fa-trash-can', onclick: () => this.remove() },
+        app.translator.trans('linkrobins-flock.admin.delete_plan')
+      )
     );
   }
 

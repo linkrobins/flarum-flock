@@ -81,6 +81,8 @@ linkrobins-flock:
     plan_price: Price
     plan_currency: Currency
     plan_interval: Billed
+    currency_help: >
+      Three letters, and it has to be one your Stripe account can charge in.
     monthly: Monthly
     yearly: Yearly
     price_change_help: >

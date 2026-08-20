@@ -80,3 +80,23 @@
     padding: 15px;
   }
 }
+
+// The plan editor.
+.FlockPlanModal {
+  // Destructive, and deliberately not next to the button an owner presses every
+  // time they change a price.
+  &-delete {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--control-bg);
+  }
+
+  &-deleteButton {
+    color: var(--muted-color);
+
+    &:hover,
+    &:focus {
+      color: #d83e3e;
+    }
+  }
+}
