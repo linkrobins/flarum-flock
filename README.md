@@ -28,8 +28,9 @@ Enable Flock in the admin panel, open its page, and fill in two fields:
 - **Your Flock key**, from your linkrobins.com dashboard.
 - **A Stripe restricted key**, from your own Stripe dashboard under Developers,
   API keys, Create restricted key. Never paste your secret key. The restricted
-  key needs write access to Checkout Sessions, Products, Prices and Webhook
-  Endpoints, and read and write on Subscriptions and Customers.
+  key needs write access to Checkout Sessions, Billing Portal Sessions,
+  Products, Prices and Webhook Endpoints, and read and write on Subscriptions
+  and Customers.
 
 Saving registers Flock's own webhook endpoint in your Stripe account, so there
 is nothing to set up there by hand.
@@ -43,6 +44,11 @@ Members find what is on sale under **Memberships** in the sidebar.
 
 ## How it behaves
 
+- **Members cancel themselves.** Anyone who has subscribed gets a Manage my
+  membership button on the Memberships page, which opens Stripe's own billing
+  portal under your account: cancelling, changing a card, and past receipts.
+  You are not the middleman for people leaving, and it keeps working if your
+  own Flock key lapses.
 - **Cancelling** keeps access until the end of the period they paid for.
 - **A failed renewal** keeps access while Stripe retries the card, for a window
   you set, a week by default.

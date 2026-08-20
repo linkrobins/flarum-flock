@@ -71,6 +71,43 @@ class Gateway
     }
 
     /**
+     * A link to Stripe's own billing portal for one customer.
+     *
+     * This is how a member cancels, and it is deliberately not something this
+     * extension reimplements: cancelling, changing a card and downloading an
+     * invoice all happen on Stripe's pages, under the owner's account, and come
+     * back to us as the webhooks we already handle. Nothing here writes to the
+     * subscription, so a member who opens the portal and changes their mind has
+     * changed nothing.
+     *
+     * @return string|null the URL to send them to
+     */
+    public function portal(string $customerId, string $returnUrl): ?string
+    {
+        $client = $this->stripe->client();
+
+        if ($client === null) {
+            return null;
+        }
+
+        try {
+            $session = $client->billingPortal->sessions->create([
+                'customer' => $customerId,
+                'return_url' => $returnUrl,
+            ]);
+
+            return $session->url;
+        } catch (ApiErrorException $e) {
+            // Most likely the owner has not configured the portal in their
+            // Stripe dashboard, or minted a key without access to it. Either
+            // way the member is told we could not open it, not shown a 500.
+            $this->log->error('[Flock] Stripe refused a billing portal session: '.$e->getMessage());
+
+            return null;
+        }
+    }
+
+    /**
      * @return array{subscription: ?string, status: ?string, user_id: ?int, plan_id: ?int}|null
      */
     public function session(string $sessionId): ?array

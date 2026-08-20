@@ -12,6 +12,7 @@ use Flarum\Extend;
 use Flarum\Settings\Event\Deserializing;
 use Flarum\Settings\Event\Saved;
 use LinkRobins\Flock\Api\Controller\CheckoutController;
+use LinkRobins\Flock\Api\Controller\PortalController;
 use LinkRobins\Flock\Api\Controller\RecheckController;
 use LinkRobins\Flock\Api\ForumFields;
 use LinkRobins\Flock\Api\Resource\PlanResource;
@@ -62,6 +63,7 @@ return [
         ->get('/linkrobins-flock/status', 'linkrobins-flock.status', StatusController::class)
         ->post('/linkrobins-flock/recheck', 'linkrobins-flock.recheck', RecheckController::class)
         ->post('/linkrobins-flock/checkout', 'linkrobins-flock.checkout', CheckoutController::class)
+        ->post('/linkrobins-flock/portal', 'linkrobins-flock.portal', PortalController::class)
         ->post('/linkrobins-flock/stripe', 'linkrobins-flock.stripe', WebhookController::class)
         ->post('/linkrobins-flock/sync', 'linkrobins-flock.sync', SyncController::class),
 
@@ -95,5 +97,7 @@ return [
         ->status('flock_plan_not_on_sale', 422)
         ->status('flock_already_a_member', 409)
         ->status('flock_not_selling', 422)
-        ->status('flock_checkout_failed', 502),
+        ->status('flock_checkout_failed', 502)
+        ->status('flock_nothing_to_manage', 404)
+        ->status('flock_portal_unavailable', 502),
 ];

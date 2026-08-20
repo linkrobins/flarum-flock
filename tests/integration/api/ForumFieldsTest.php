@@ -99,7 +99,52 @@ class ForumFieldsTest extends TestCase
         $this->assertTrue($this->forum()['flockSelling']);
     }
 
-    protected function subscription(string $status, Carbon $until): void
+    /** @test */
+    #[Test]
+    public function a_guest_has_nothing_to_manage(): void
+    {
+        $this->assertFalse($this->forum()['flockCanManage']);
+    }
+
+    /** @test */
+    #[Test]
+    public function a_member_with_a_stripe_customer_can_manage(): void
+    {
+        $this->subscription('active', Carbon::now()->addMonth(), 'cus_1');
+
+        $this->assertTrue($this->forum(2)['flockCanManage']);
+    }
+
+    /**
+     * Entitlement has run out, but the receipts have not. Somebody who has
+     * stopped paying still needs to see what they were charged, and the way
+     * back in is the same button.
+     *
+     * @test
+     */
+    #[Test]
+    public function a_former_member_can_still_manage(): void
+    {
+        $this->subscription('canceled', Carbon::now()->subDay(), 'cus_1');
+
+        $this->assertTrue($this->forum(2)['flockCanManage']);
+    }
+
+    /**
+     * A row that never reached Stripe, which is what an abandoned checkout
+     * leaves behind if anything ever writes one. There is no portal to open.
+     *
+     * @test
+     */
+    #[Test]
+    public function a_membership_with_no_stripe_customer_offers_no_portal(): void
+    {
+        $this->subscription('active', Carbon::now()->addMonth());
+
+        $this->assertFalse($this->forum(2)['flockCanManage']);
+    }
+
+    protected function subscription(string $status, Carbon $until, ?string $customer = null): void
     {
         $this->app();
 
@@ -109,6 +154,7 @@ class ForumFieldsTest extends TestCase
         $subscription->user_id = 2;
         $subscription->plan_id = 1;
         $subscription->stripe_subscription_id = 'sub_1';
+        $subscription->stripe_customer_id = $customer;
         $subscription->status = $status;
         $subscription->access_until = $until;
         $subscription->save();

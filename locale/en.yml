@@ -93,6 +93,11 @@ linkrobins-flock:
     synced: "{count, plural, one {# membership checked} other {# memberships checked}}"
 
   forum:
+    manage: Manage my membership
+    manage_help: >
+      Cancelling, changing your card and your past receipts all live on Stripe's
+      own pages. Cancelling there keeps your access until the end of the period
+      you have already paid for.
     nav: Memberships
     join: Join
     you_have_this: You have this
@@ -108,3 +113,5 @@ flock_already_a_member_message: You already have this membership, so there's not
 flock_plan_not_on_sale_message: That membership isn't available right now.
 flock_not_selling_message: This forum isn't taking new memberships at the moment. Nothing changes for anyone who already has one.
 flock_checkout_failed_message: Couldn't reach the payment page. Nothing has been charged. Try again in a moment.
+flock_nothing_to_manage_message: There's no membership on this account to manage.
+flock_portal_unavailable_message: Couldn't open the billing page. Nothing has changed. Let the forum's owner know if it keeps happening.

@@ -30,6 +30,9 @@ class FakeGateway extends Gateway
     /** @var list<string> */
     public static array $asked = [];
 
+    /** Null stands for Stripe refusing to open the portal. */
+    public static ?string $portal = 'https://billing.stripe.test/session';
+
     public function __construct()
     {
     }
@@ -38,12 +41,20 @@ class FakeGateway extends Gateway
     {
         self::$session = null;
         self::$subscription = null;
+        self::$portal = 'https://billing.stripe.test/session';
         self::$asked = [];
     }
 
     public function checkout(Plan $plan, int $userId, ?string $email, string $successUrl, string $cancelUrl): ?string
     {
         return 'https://checkout.stripe.test/session';
+    }
+
+    public function portal(string $customerId, string $returnUrl): ?string
+    {
+        self::$asked[] = 'portal:'.$customerId;
+
+        return self::$portal;
     }
 
     public function session(string $sessionId): ?array

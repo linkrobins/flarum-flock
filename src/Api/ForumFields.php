@@ -18,8 +18,9 @@ use Tobyz\JsonApiServer\Context;
  * What the Join page needs to know before it draws anything.
  *
  * Which plans this member already has, so the page offers to join the ones they
- * do not rather than inviting them to buy the same membership twice, and whether
- * this forum can start new memberships at all.
+ * do not rather than inviting them to buy the same membership twice, whether
+ * this forum can start new memberships at all, and whether this member has
+ * anything on Stripe's side to manage.
  *
  * Fail-closed throughout: these ride on every forum response, so anything
  * unexpected reads as "no memberships, not selling" rather than 500ing the boot
@@ -57,6 +58,27 @@ class ForumFields
                             ->all();
                     } catch (\Throwable) {
                         return [];
+                    }
+                }),
+
+            // Whether this member has anything to manage on Stripe's side.
+            // False for a guest, and false on any error, so the button is
+            // simply absent rather than offering a portal that cannot open.
+            Schema\Boolean::make('flockCanManage')
+                ->get(function ($model, Context $context): bool {
+                    try {
+                        $actor = $context->getActor();
+
+                        if (! $actor->exists) {
+                            return false;
+                        }
+
+                        return Subscription::query()
+                            ->where('user_id', $actor->id)
+                            ->whereNotNull('stripe_customer_id')
+                            ->exists();
+                    } catch (\Throwable) {
+                        return false;
                     }
                 }),
 

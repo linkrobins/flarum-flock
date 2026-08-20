@@ -21,6 +21,9 @@ export default class PlansPage extends Page {
   /** The plan whose button is waiting on Stripe, so only that one spins. */
   starting: number | null = null;
 
+  /** Whether the billing portal link is being fetched. */
+  managing = false;
+
   oninit(vnode: Mithril.Vnode) {
     super.oninit(vnode);
 
@@ -40,7 +43,7 @@ export default class PlansPage extends Page {
   view() {
     return m('div', { className: 'FlockPlansPage' }, [
       IndexPage.prototype.hero.call(this),
-      m('div', { className: 'container' }, this.loading ? m(LoadingIndicator, { display: 'block' }) : this.content()),
+      m('div', { className: 'container' }, this.loading ? m(LoadingIndicator, { display: 'block' }) : [this.content(), this.manage()]),
     ]);
   }
 
@@ -102,6 +105,49 @@ export default class PlansPage extends Page {
       // An unknown currency code should cost a nice symbol, not the page.
       return (plan.amount() / 100).toFixed(2) + ' ' + currency;
     }
+  }
+
+  /**
+   * The way out, for anyone who has ever paid.
+   *
+   * Deliberately outside content(): a forum that has stopped selling, or whose
+   * owner has taken every plan off sale, still has members paying for it, and
+   * "there is nothing here" must never be the answer somebody gets when they
+   * are trying to stop being charged.
+   */
+  manage(): Mithril.Children {
+    if (!app.forum.attribute('flockCanManage')) {
+      return null;
+    }
+
+    return m('div', { className: 'FlockManage' }, [
+      m(
+        Button,
+        { className: 'Button FlockManage-button', loading: this.managing, onclick: () => this.openPortal() },
+        app.translator.trans('linkrobins-flock.forum.manage')
+      ),
+      m('p', { className: 'helpText FlockManage-help' }, app.translator.trans('linkrobins-flock.forum.manage_help')),
+    ]);
+  }
+
+  openPortal() {
+    this.managing = true;
+    m.redraw();
+
+    app
+      .request<{ url: string }>({
+        method: 'POST',
+        url: app.forum.attribute('apiUrl') + '/linkrobins-flock/portal',
+      })
+      .then((response) => {
+        // Stripe's own pages, under the owner's account. Whatever they do there
+        // reaches this forum as the webhooks it already handles.
+        window.location.assign(response.url);
+      })
+      .catch(() => {
+        this.managing = false;
+        m.redraw();
+      });
   }
 
   join(plan: Plan) {
