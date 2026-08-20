@@ -83,6 +83,15 @@
 
 // The plan editor.
 .FlockPlanModal {
+  // Core's Button--block is a LESS mixin, not a class, and extension LESS cannot
+  // reach core's mixins any more than it can reach core's variables. Written out.
+  &-save {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: 5px;
+  }
+
   // Destructive, and deliberately not next to the button an owner presses every
   // time they change a price.
   &-delete {

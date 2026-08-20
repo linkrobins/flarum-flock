@@ -120,7 +120,7 @@ export default class PlanModal extends Modal<PlanModalAttrs & any> {
         { className: 'Form-group' },
         m(
           Button,
-          { className: 'Button Button--primary Button--block', type: 'submit', loading: this.loading },
+          { className: 'Button Button--primary FlockPlanModal-save', type: 'submit', loading: this.loading },
           app.translator.trans('linkrobins-flock.admin.save_plan')
         )
       ),
