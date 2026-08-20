@@ -88,8 +88,10 @@ class Groups
 
         $group = new Group();
         $group->rename($plan->name, $plan->name);
-        $group->color = '#c88e09';
-        $group->icon = 'fas fa-feather';
+        // Deliberately no colour and no icon. This group lives on the owner's
+        // forum and belongs to them, so it arrives plain and they can dress it
+        // however their forum is dressed. Branding somebody else's group with
+        // ours would be presumptuous, and it is hidden by default anyway.
         $group->is_hidden = true;
         $group->save();
 

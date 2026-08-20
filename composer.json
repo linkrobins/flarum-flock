@@ -49,9 +49,9 @@
             "title": "Link Robins Flock",
             "category": "feature",
             "icon": {
-                "name": "fas fa-feather",
-                "backgroundColor": "#c88e09",
-                "color": "#fff"
+                "name": "fas fa-id-card",
+                "backgroundColor": "#1a2535",
+                "color": "#07adcc"
             }
         },
         "flarum-cli": {

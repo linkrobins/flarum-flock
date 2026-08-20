@@ -19,7 +19,7 @@ app.initializers.add('linkrobins/flock', () => {
 
     items.add(
       'flock',
-      LinkButton.component({ href: app.route('flock.plans'), icon: 'fas fa-feather' }, app.translator.trans('linkrobins-flock.forum.nav')),
+      LinkButton.component({ href: app.route('flock.plans'), icon: 'fas fa-id-card' }, app.translator.trans('linkrobins-flock.forum.nav')),
       -10
     );
   });
